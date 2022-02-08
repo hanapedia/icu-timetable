@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "module": "commonjs",
+    "target": "es5",
+    "allowJs": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "lib": ["es2017"],
+    "types": ["node"]
+  },
+  "include": ["dist/**/*", "data/**/*"]
+}
