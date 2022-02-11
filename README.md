@@ -4,7 +4,7 @@ If you have VSCode Remote - Containers extention installed, you can reopen the d
 
 ## Directories
 
-/database directory holds the tools for converting csv data into json, and saving it to Cloud Firestore.
+/utils directory holds the tools for firebase testing and migration
 
 /icu-timetable-client holds the react native application created using expo.
 
@@ -19,10 +19,10 @@ cd databse
 yarn install
 ```
 
-using the tool
+using the tools
 
 ```
-ts-node dist/index
+ts-node <tools directory>/index
 ```
 
 ### client app

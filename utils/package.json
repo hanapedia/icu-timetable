@@ -16,6 +16,6 @@
     "webpack-cli": "^4.9.2"
   },
   "bin": {
-    "fire-migrate": "dist/index.js"
+    "fire-migrate": "database/index.js"
   }
 }

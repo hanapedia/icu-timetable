@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "database",
     "module": "commonjs",
     "target": "es5",
     "allowJs": true,
@@ -9,5 +9,6 @@
     "lib": ["es2017"],
     "types": ["node"]
   },
-  "include": ["dist/**/*", "data/**/*"]
+  "include": ["./database/", "./auth/"],
+  "exclude": []
 }
