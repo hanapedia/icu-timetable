@@ -10,6 +10,7 @@ module.exports = function (api) {
           extensions: ['.js', '.ts', '.tsx'],
         },
       ],
+      ['inline-dotenv'],
     ],
   };
 };
