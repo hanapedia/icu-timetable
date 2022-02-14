@@ -2,3 +2,5 @@ data
 firebase-sdk-pk
 .env
 node_modules
+firebase-debug.log
+ui-debug.log
