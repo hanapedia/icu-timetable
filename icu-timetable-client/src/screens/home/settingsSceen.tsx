@@ -1,22 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { useAuth } from 'hooks/useAuth';
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-const AuthScreen = () => {
-  const { register } = useAuth();
+const SettingsScreen = () => {
   return (
     <View style={styles.container}>
       <Text>Sign up</Text>
-      <Button onPress={register} title='register'>
-        Register
-      </Button>
       <StatusBar style='auto' />
     </View>
   );
 };
 
-export default AuthScreen;
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
   container: {
