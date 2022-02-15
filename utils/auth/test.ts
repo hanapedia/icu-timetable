@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 import { initializeApp } from 'firebase/app';
 import {
+  connectAuthEmulator,
   getAuth,
   sendEmailVerification,
+  signInAnonymously,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import 'dotenv/config';
@@ -19,13 +21,14 @@ const firebaseApp = initializeApp({
 
 const signUpAndVerifyEmail = async () => {
   const auth = getAuth(firebaseApp);
+  connectAuthEmulator(auth, 'http://localhost:9099');
   try {
-    await signInWithEmailAndPassword(
-      auth,
-      process.env.TEST_EMAIL,
-      process.env.TEST_PASSWORD
+    await signInAnonymously(
+      auth
+      // process.env.TEST_EMAIL,
+      // process.env.TEST_PASSWORD
     );
-    await sendEmailVerification(auth.currentUser);
+    // await sendEmailVerification(auth.currentUser);
   } catch (error) {
     console.error(error);
   }

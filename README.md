@@ -34,3 +34,13 @@ cd icu-timetable-client
 yarn install
 yarn start // or expo start
 ```
+
+Use Local Firebase Emulator
+
+```
+cd utils
+firebase login
+firebase emulators:start --import=./emulator --export-on-exit
+```
+
+This persists local dvelopment changes /utils/emulator
