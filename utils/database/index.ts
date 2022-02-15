@@ -3,6 +3,7 @@
 import * as admin from 'firebase-admin';
 import { Command } from 'commander';
 import { CourseDoc, generateCourseDocId, ReadCoursesCSV } from './coursesCSV';
+import 'dotenv/config';
 
 // Set up command line args
 const cmd = new Command();
@@ -14,9 +15,12 @@ cmd
 
 // Firebase SDK initialization
 admin.initializeApp({
-  credential: admin.credential.cert(
-    '/workspaces/icu-timetable/database/firebase-sdk-pk/icu-timetable-firebase-adminsdk-k0w9l-4b9b71c709.json'
-  ),
+  projectId: process.env.PROJECT_ID,
+  // credential: admin.credential.cert(
+  //   '/workspaces/icu-timetable/database/firebase-sdk-pk/icu-timetable-firebase-adminsdk-k0w9l-4b9b71c709.json'
+  // ),
+
+  // GOOGLE_APPLICATION_CREDENTIALS=/workspaces/icu-timetable/database/firebase-sdk-pk/icu-timetable-firebase-adminsdk-k0w9l-4b9b71c709.json
 });
 const db = admin.firestore();
 
