@@ -1,71 +1,63 @@
 import { GetFirebaseApp } from 'services/firebase/init';
 import {
   getAuth,
-  signInWithEmailAndPassword,
   User,
-  signOut,
-  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  Unsubscribe,
+  signInAnonymously,
+  setPersistence,
+  browserLocalPersistence,
+  connectAuthEmulator,
 } from 'firebase/auth';
 
-type AuthData = User;
+type AuthData = User | null;
+
+type AuthStateChangeCallback = (authData: AuthData) => void;
 
 interface AuthService {
-  logIn: (email: string, password: string) => Promise<User | null>;
-  logOut: () => Promise<boolean>;
-  register: (email: string, password: string) => Promise<User | null>;
+  register: () => Promise<User | null>;
+  authStateChangeHandler: (
+    authStateChangeCallback: AuthStateChangeCallback
+  ) => Unsubscribe;
 }
 
-// signs in the user using firebase client SDK, make sure to null check on implementation
-const logIn = async (email: string, password: string) => {
-  try {
-    const firebaseApp = GetFirebaseApp();
-    const auth = getAuth(firebaseApp);
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
-    return userCredential.user;
-  } catch (error) {
-    return null;
-  }
-};
-
-// signs out the current user using firebase client SDK
-const logOut = async () => {
-  try {
-    const firebaseApp = GetFirebaseApp();
-    const auth = getAuth(firebaseApp);
-    await signOut(auth);
-    return true;
-  } catch (error) {
-    return false;
-  }
+const initAuth = () => {
+  const auth = getAuth(GetFirebaseApp());
+  if (process.env.AUTH_EMULATOR)
+    connectAuthEmulator(auth, process.env.AUTH_EMULATOR);
+  return auth;
 };
 
 // signs up user using firebase client SDK
 // this also logs the user in
 // null check required for return value
-const register = async (email: string, password: string) => {
+const register = async () => {
   try {
-    const firebaseApp = GetFirebaseApp();
-    const auth = getAuth(firebaseApp);
-    const userCredentials = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    const auth = initAuth();
+    await setPersistence(auth, browserLocalPersistence);
+    const userCredentials = await signInAnonymously(auth);
     return userCredentials.user;
   } catch (error) {
     return null;
   }
 };
 
+// handler triggered when user signs in or signs out
+// since auth state persistance is set to local
+// explicit signout must be performed to clear auth state
+const authStateChangeHandler = (
+  authStateChangeCallback: AuthStateChangeCallback
+) => {
+  const auth = initAuth();
+  return onAuthStateChanged(auth, (currentUser) => {
+    authStateChangeCallback(currentUser);
+  });
+};
+
 const authService: AuthService = {
-  logIn: logIn,
-  logOut: logOut,
   register: register,
+  authStateChangeHandler: authStateChangeHandler,
 };
 
 export { authService };
-export type { AuthData, AuthService };
+export type { AuthData };
