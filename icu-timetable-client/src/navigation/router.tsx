@@ -9,7 +9,7 @@ const Router = () => {
 
   return (
     <NavigationContainer>
-      {authData ? <AuthStack /> : <MainStack />}
+      {authData ? <MainStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };
