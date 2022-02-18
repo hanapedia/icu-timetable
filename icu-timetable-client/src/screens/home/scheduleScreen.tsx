@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 const ScheduleScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Sign up</Text>
+      <Text>Schedule</Text>
       <StatusBar style='auto' />
     </View>
   );
