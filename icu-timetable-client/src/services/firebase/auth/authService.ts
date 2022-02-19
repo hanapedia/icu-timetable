@@ -1,30 +1,30 @@
 import { GetFirebaseApp } from 'services/firebase/init';
 import {
   getAuth,
-  User,
   onAuthStateChanged,
   Unsubscribe,
   signInAnonymously,
-  setPersistence,
-  browserLocalPersistence,
   connectAuthEmulator,
 } from 'firebase/auth';
+import {
+  localStorageService,
+  LOCAL_STORAGE_USER,
+} from 'services/local/storage';
 
-type AuthData = User | null;
+type AuthStateChangeCallback = () => Promise<void>;
 
-type AuthStateChangeCallback = (authData: AuthData) => void;
-
-interface AuthService {
-  register: () => Promise<User | null>;
+type AuthService = {
+  register: () => Promise<string>;
   authStateChangeHandler: (
     authStateChangeCallback: AuthStateChangeCallback
   ) => Unsubscribe;
-}
+};
 
 const initAuth = () => {
   const auth = getAuth(GetFirebaseApp());
-  if (process.env.AUTH_EMULATOR)
-    connectAuthEmulator(auth, process.env.AUTH_EMULATOR);
+  if (auth.emulatorConfig) return auth;
+  // if (process.env.AUTH_EMULATOR)
+  connectAuthEmulator(auth, 'http://localhost:9099');
   return auth;
 };
 
@@ -34,11 +34,11 @@ const initAuth = () => {
 const register = async () => {
   try {
     const auth = initAuth();
-    await setPersistence(auth, browserLocalPersistence);
-    const userCredentials = await signInAnonymously(auth);
-    return userCredentials.user;
+    // await setPersistence(auth, browserLocalPersistence);
+    const { user } = await signInAnonymously(auth);
+    return user.uid;
   } catch (error) {
-    return null;
+    throw new Error(`Unale to register anonymousely:${error}`);
   }
 };
 
@@ -50,7 +50,15 @@ const authStateChangeHandler = (
 ) => {
   const auth = initAuth();
   return onAuthStateChanged(auth, (currentUser) => {
-    authStateChangeCallback(currentUser);
+    try {
+      if (currentUser) {
+        authStateChangeCallback();
+      } else {
+        localStorageService.remove(LOCAL_STORAGE_USER);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   });
 };
 
@@ -60,4 +68,3 @@ const authService: AuthService = {
 };
 
 export { authService };
-export type { AuthData };

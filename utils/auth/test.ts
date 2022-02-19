@@ -2,7 +2,9 @@
 import { initializeApp } from 'firebase/app';
 import {
   connectAuthEmulator,
+  EmailAuthProvider,
   getAuth,
+  linkWithCredential,
   sendEmailVerification,
   signInAnonymously,
   signInWithEmailAndPassword,
@@ -23,11 +25,16 @@ const signUpAndVerifyEmail = async () => {
   const auth = getAuth(firebaseApp);
   connectAuthEmulator(auth, 'http://localhost:9099');
   try {
-    await signInAnonymously(
+    const userCredentials = await signInAnonymously(
       auth
       // process.env.TEST_EMAIL,
       // process.env.TEST_PASSWORD
     );
+    const credential = await EmailAuthProvider.credential(
+      process.env.TEST_EMAIL,
+      process.env.TEST_PASSWORD
+    );
+    await linkWithCredential(userCredentials.user, credential);
     // await sendEmailVerification(auth.currentUser);
   } catch (error) {
     console.error(error);
