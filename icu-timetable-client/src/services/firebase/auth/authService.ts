@@ -4,8 +4,6 @@ import {
   onAuthStateChanged,
   Unsubscribe,
   signInAnonymously,
-  setPersistence,
-  browserLocalPersistence,
   connectAuthEmulator,
 } from 'firebase/auth';
 import {
