@@ -38,24 +38,10 @@ All queries for retrieving documents
 
 */
 
-type Database = {
-  courses: {
-    // has subcollections based on year and term
-    '2019A': CourseDoc[];
-    '2019S': CourseDoc[];
-    '2019W': CourseDoc[];
-    '2020A': CourseDoc[];
-    '2020S': CourseDoc[];
-    '2020W': CourseDoc[];
-    '2021A': CourseDoc[];
-    '2021S': CourseDoc[];
-    '2021W': CourseDoc[];
-    '2022A': CourseDoc[];
-    '2022S': CourseDoc[];
-    '2022W': CourseDoc[];
-  };
-  users: UserDoc[]; // each docs uses uid provided by auth service as id
-  reviews: Review[]; // subcollection of Courses
+const RootTables = {
+  courses: 'allCourses',
+  users: 'users', // each docs uses uid provided by auth service as id
+  reviews: 'reviews', // subcollection of Courses
 };
 
 type CourseDoc = {
@@ -88,7 +74,7 @@ type UserDoc = {
   schedules?: Schedules;
   // list of courseIds of all the courses that user has taken.
   // update based on the schedules
-  courses: string[];
+  courses?: string[];
 };
 
 type Schedules = {
@@ -131,3 +117,6 @@ type Review = {
   excitement: number;
   comment?: string;
 };
+
+export { RootTables };
+export type { UserDoc, CourseDoc, Schedule, Schedules, CourseDocShort, Review };
