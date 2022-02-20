@@ -7,16 +7,16 @@ import { useAuth } from 'hooks/useAuth';
 const Stack = createNativeStackNavigator();
 
 const MainStack = () => {
-  const { unregisterLocal } = useAuth();
+  const { unregister, authData } = useAuth();
   return (
     <Stack.Navigator>
       <Stack.Screen
         name='Main'
         component={HomeStack}
         options={{
-          headerTitle: 'Home',
+          headerTitle: authData?.uid,
           headerRight: () => (
-            <Button title='unregister' onPress={unregisterLocal}></Button>
+            <Button title='unregister' onPress={unregister}></Button>
           ),
         }}
       />

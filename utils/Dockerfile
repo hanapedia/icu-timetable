@@ -1,12 +1,12 @@
-FROM node:16
+FROM node:16-bullseye
 
 WORKDIR /app
 
-RUN apt-get update && apt-get upgrade
+RUN apt-get update
 
-RUN apt-get install openjdk-8-jre
+RUN apt-get install -y openjdk-11-jdk
 
-RUN npm install -g yarn
+# RUN npm install -g yarn
 
 RUN yarn global add firebase-tools
 

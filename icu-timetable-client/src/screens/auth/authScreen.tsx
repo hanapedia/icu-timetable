@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 const AuthScreen = () => {
-  const { registerLocal, authData } = useAuth();
+  const { register, authData } = useAuth();
 
   // #NO_FIREBASE_TEST use this tag to locate test code
   const formTestData: AuthFormData = {
@@ -25,7 +25,7 @@ const AuthScreen = () => {
 
   const registerHandler = async (e: NativeSyntheticEvent<NativeTouchEvent>) => {
     try {
-      await registerLocal(formTestData);
+      await register(formTestData);
     } catch (error) {
       console.error(error);
     }

@@ -7,6 +7,7 @@ import { LOCAL_STORAGE_USER } from 'services/local/storage/storageKeys';
 type AuthContextData = {
   authData: UserDocument | null;
   register: (authFormData: AuthFormData) => Promise<void>;
+  unregister: () => Promise<void>;
   isLoading: boolean;
   registerLocal: (authFormData: AuthFormData) => Promise<void>;
   unregisterLocal: () => Promise<void>;
@@ -35,6 +36,12 @@ const AuthProvider: FC = ({ children }) => {
     } catch (error) {
       if (error instanceof Error) throw new Error(error.message);
     }
+  };
+
+  const unregister = async () => {
+    await authService.unregister();
+    await setAuthData(null);
+    await localStorageService.remove(LOCAL_STORAGE_USER);
   };
 
   // only for bypassing firebase authentication
@@ -81,7 +88,14 @@ const AuthProvider: FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ authData, register, isLoading, registerLocal, unregisterLocal }}
+      value={{
+        authData,
+        register,
+        unregister,
+        isLoading,
+        registerLocal,
+        unregisterLocal,
+      }}
     >
       {children}
     </AuthContext.Provider>

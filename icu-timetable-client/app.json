@@ -13,9 +13,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
@@ -26,7 +24,18 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyD5-oE5J8t3-vyB0DGJKgkYySs464IBKnk",
+          "authDomain": "icu-timetable.firebaseapp.com",
+          "projectId": "icu-timetable",
+          "storageBucket": "icu-timetable.appspot.com",
+          "messagingSenderId": "415604202358",
+          "appId": "1:415604202358:web:cc220da9349e56911c7857",
+          "measurementId": "G-MGS75DYJFL"
+        }
+      }
     }
   }
 }

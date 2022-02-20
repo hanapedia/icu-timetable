@@ -4,7 +4,7 @@ import {
   onAuthStateChanged,
   Unsubscribe,
   signInAnonymously,
-  connectAuthEmulator,
+  signOut,
 } from 'firebase/auth';
 import {
   localStorageService,
@@ -15,17 +15,14 @@ type AuthStateChangeCallback = () => Promise<void>;
 
 type AuthService = {
   register: () => Promise<string>;
+  unregister: () => Promise<void>;
   authStateChangeHandler: (
     authStateChangeCallback: AuthStateChangeCallback
   ) => Unsubscribe;
 };
 
 const initAuth = () => {
-  const auth = getAuth(GetFirebaseApp());
-  if (auth.emulatorConfig) return auth;
-  // if (process.env.AUTH_EMULATOR)
-  connectAuthEmulator(auth, 'http://localhost:9099');
-  return auth;
+  return getAuth(GetFirebaseApp());
 };
 
 // signs up user using firebase client SDK
@@ -37,6 +34,19 @@ const register = async () => {
     // await setPersistence(auth, browserLocalPersistence);
     const { user } = await signInAnonymously(auth);
     return user.uid;
+  } catch (error) {
+    throw new Error(`Unale to register anonymousely:${error}`);
+  }
+};
+
+//signs out user
+// should only be used for testing purposes
+const unregister = async () => {
+  try {
+    const auth = initAuth();
+    // await setPersistence(auth, browserLocalPersistence);
+    await signOut(auth);
+    return;
   } catch (error) {
     throw new Error(`Unale to register anonymousely:${error}`);
   }
@@ -65,6 +75,7 @@ const authStateChangeHandler = (
 const authService: AuthService = {
   register: register,
   authStateChangeHandler: authStateChangeHandler,
+  unregister: unregister,
 };
 
 export { authService };
