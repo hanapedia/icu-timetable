@@ -1,0 +1,14 @@
+version: '3'
+services:
+  firebase-emulator:
+    build: .
+    volumes:
+      - ./emulator:/app/emulator
+      - ./firestore:/app/firestore
+      - ./storage:/app/storage
+    ports:
+      - 9099:9099 # Auth
+      - 4000:4000 # UI
+      - 8080:8080 # firestore
+      - 9199:9199 # storage
+    tty: true
