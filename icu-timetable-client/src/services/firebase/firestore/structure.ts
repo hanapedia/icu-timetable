@@ -78,15 +78,6 @@ type CourseDoc = {
   nRviews: number;
 };
 
-// for displaying relevent data to the timetable
-// without making query for each courses in a schedule
-type CourseDocShort = {
-  eName: string;
-  jName: string;
-  courseID: number;
-  schedule: string[];
-};
-
 type UserDoc = {
   uid: string;
   gradYear: number;
@@ -94,24 +85,26 @@ type UserDoc = {
   majorType: 'double' | 'single' | 'minor' | 'undecided';
   major: string[];
   studyAbroad: boolean;
-  schedules?: {
-    // considering the potential scaling needs, nested object works fine
-    '2019A'?: Schedule[];
-    '2019S'?: Schedule[];
-    '2019W'?: Schedule[];
-    '2020A'?: Schedule[];
-    '2020S'?: Schedule[];
-    '2020W'?: Schedule[];
-    '2021A'?: Schedule[];
-    '2021S'?: Schedule[];
-    '2021W'?: Schedule[];
-    '2022A'?: Schedule[];
-    '2022S'?: Schedule[];
-    '2022W'?: Schedule[]; // holds all the schedules of the user
-  };
+  schedules?: Schedules;
   // list of courseIds of all the courses that user has taken.
   // update based on the schedules
   courses: string[];
+};
+
+type Schedules = {
+  // considering the potential scaling needs, nested object works fine
+  '2019A'?: Schedule;
+  '2019S'?: Schedule;
+  '2019W'?: Schedule;
+  '2020A'?: Schedule;
+  '2020S'?: Schedule;
+  '2020W'?: Schedule;
+  '2021A'?: Schedule;
+  '2021S'?: Schedule;
+  '2021W'?: Schedule;
+  '2022A'?: Schedule;
+  '2022S'?: Schedule;
+  '2022W'?: Schedule; // holds all the schedules of the user
 };
 
 // used in user document
@@ -119,6 +112,15 @@ type Schedule = {
   courses: CourseDocShort[]; // holds shortened course docs for all the courses in schedule
   sat: boolean;
   eigth: boolean;
+};
+
+// for displaying relevent data to the timetable
+// without making query for each courses in a schedule
+type CourseDocShort = {
+  eName: string;
+  jName: string;
+  courseDocId: number;
+  schedule: string[];
 };
 
 // use in the subcollection of courses document
