@@ -1,6 +1,7 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { authService } from 'services/firebase/auth/authService';
 import { UserDoc } from 'services/firebase/firestore';
+import { userService } from 'services/firebase/firestore/users/userService';
 import { localStorageService } from 'services/local/storage/asyncStorage';
 import { LOCAL_STORAGE_USER } from 'services/local/storage/storageKeys';
 
@@ -30,7 +31,8 @@ const AuthProvider: FC = ({ children }) => {
   const register = async (authFormData: AuthFormData) => {
     try {
       const uid = await authService.register();
-      const _authData = await { uid: uid, ...authFormData };
+      const _authData: UserDoc = await { uid: uid, ...authFormData };
+      await userService.setUser(_authData);
       await setAuthData(_authData);
       await localStorageService.set(LOCAL_STORAGE_USER, _authData);
     } catch (error) {

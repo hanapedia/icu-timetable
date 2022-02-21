@@ -15,7 +15,7 @@ RelationShips
         Users : Courses 
             pivot: Schedules
         Schedules : Courses
-            pivot: courses array in Schedule
+            pivot: courses array in TimeTable
     One-to-Many:
         Users : Schedules
             f-key: userId
@@ -71,30 +71,30 @@ type UserDoc = {
   majorType: 'double' | 'single' | 'minor' | 'undecided';
   major: string[];
   studyAbroad: boolean;
-  schedules?: Schedules;
+  timeTables?: TimeTables;
   // list of courseIds of all the courses that user has taken.
   // update based on the schedules
   courses?: string[];
 };
 
-type Schedules = {
+type TimeTables = {
   // considering the potential scaling needs, nested object works fine
-  '2019A'?: Schedule;
-  '2019S'?: Schedule;
-  '2019W'?: Schedule;
-  '2020A'?: Schedule;
-  '2020S'?: Schedule;
-  '2020W'?: Schedule;
-  '2021A'?: Schedule;
-  '2021S'?: Schedule;
-  '2021W'?: Schedule;
-  '2022A'?: Schedule;
-  '2022S'?: Schedule;
-  '2022W'?: Schedule; // holds all the schedules of the user
+  '2019A'?: TimeTable;
+  '2019S'?: TimeTable;
+  '2019W'?: TimeTable;
+  '2020A'?: TimeTable;
+  '2020S'?: TimeTable;
+  '2020W'?: TimeTable;
+  '2021A'?: TimeTable;
+  '2021S'?: TimeTable;
+  '2021W'?: TimeTable;
+  '2022A'?: TimeTable;
+  '2022S'?: TimeTable;
+  '2022W'?: TimeTable; // holds all the schedules of the user
 };
 
 // used in user document
-type Schedule = {
+type TimeTable = {
   courses: CourseDocShort[]; // holds shortened course docs for all the courses in schedule
   sat: boolean;
   eigth: boolean;
@@ -105,7 +105,7 @@ type Schedule = {
 type CourseDocShort = {
   eName: string;
   jName: string;
-  courseDocId: number;
+  courseDocId: string;
   schedule: string[];
 };
 
@@ -119,4 +119,11 @@ type Review = {
 };
 
 export { RootTables };
-export type { UserDoc, CourseDoc, Schedule, Schedules, CourseDocShort, Review };
+export type {
+  UserDoc,
+  CourseDoc,
+  TimeTable,
+  TimeTables,
+  CourseDocShort,
+  Review,
+};

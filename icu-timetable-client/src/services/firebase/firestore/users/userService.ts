@@ -1,4 +1,5 @@
 import {
+  arrayUnion,
   collection,
   doc,
   DocumentData,
@@ -9,18 +10,27 @@ import {
   QueryDocumentSnapshot,
   setDoc,
   SnapshotOptions,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import {
   UserDoc,
   initFirestore,
   RootTables,
+  TimeTable,
 } from 'services/firebase/firestore';
+import { CourseDocShort } from '../structure';
 
 type UserService = {
   setUser: (userDoc: UserDoc) => Promise<void>;
   getUserById: (uid: string) => Promise<UserDoc | null>;
-  getUsersByProps: (params: QueryParams) => Promise<UserDoc[] | null>;
+  getUserByFields: (params: QueryParams) => Promise<UserDoc[] | null>;
+  updateUser: (uid: string, userFields: UpdatableUserFields) => Promise<void>;
+  updateUserTimetable: (
+    uid: string,
+    termAndYear: string,
+    courseDocShorts: CourseDocShort[]
+  ) => Promise<void>;
 };
 
 type QueryParams = {
@@ -29,6 +39,12 @@ type QueryParams = {
   majorType?: string[]; //up to three
   studyAbroad?: boolean;
   course?: string;
+};
+
+type UpdatableUserFields = {
+  majorType?: 'double' | 'single' | 'minor' | 'undecided';
+  major?: string[];
+  studyAbroad?: boolean;
 };
 
 const userConverter = {
@@ -40,7 +56,7 @@ const userConverter = {
       majorType: userDoc.majorType,
       major: userDoc.major,
       studyAbroad: userDoc.studyAbroad,
-      schedules: userDoc.schedules,
+      schedules: userDoc.timeTables,
       courses: userDoc.courses,
     };
   },
@@ -57,12 +73,13 @@ const userConverter = {
       majorType: data.majorType,
       major: data.major,
       studyAbroad: data.studyAbroad,
-      schedules: data.schedules,
+      timeTables: data.timeTables,
       courses: data.courses,
     };
   },
 };
 
+// sets a user document
 const setUser = async (userDoc: UserDoc) => {
   const db = initFirestore();
   const userDocRef = doc(db, RootTables.users, userDoc.uid).withConverter(
@@ -71,6 +88,8 @@ const setUser = async (userDoc: UserDoc) => {
   await setDoc(userDocRef, userDoc);
 };
 
+// get a user document with matching uid
+// retunrs null if no match
 const getUserById = async (uid: string): Promise<UserDoc | null> => {
   const db = initFirestore();
   const userDocRef = doc(db, RootTables.users, uid).withConverter(
@@ -80,16 +99,21 @@ const getUserById = async (uid: string): Promise<UserDoc | null> => {
   return userSnap.exists() ? userSnap.data() : null;
 };
 
-const getUsersByProps = async (
+// get user documents(s) with fields matching params
+// returns null if no match
+const getUserByFields = async (
   params: QueryParams
 ): Promise<UserDoc[] | null> => {
   const db = initFirestore();
   const usersColRef = collection(db, RootTables.users).withConverter(
     userConverter
   );
+  // array to hold wuery constraints retrieved from param
   const queryConstraints: QueryConstraint[] = [];
+  // array to return user documents
   const userDocs: UserDoc[] = [];
 
+  // check each parameter and add constraints if defined
   if (params.major !== undefined)
     queryConstraints.push(where('major', 'array-contains-any', params.major));
   if (params.gradYear !== undefined)
@@ -113,3 +137,58 @@ const getUsersByProps = async (
 
   return userDocs.length > 0 ? userDocs : null;
 };
+
+// update user information such as major and studyAbroad
+// use updateUserTimetable for updating timetables
+const updateUser = async (uid: string, userFields: UpdatableUserFields) => {
+  const db = initFirestore();
+  const userDocRef = doc(db, RootTables.users, uid).withConverter(
+    userConverter
+  );
+  await updateDoc(userDocRef, userFields);
+};
+
+// update user time table
+// pass an array of short CourseDocs
+const updateUserTimetable = async (
+  uid: string,
+  termAndYear: string,
+  courseDocShorts: CourseDocShort[]
+) => {
+  const db = initFirestore();
+  const userDocRef = doc(db, RootTables.users, uid).withConverter(
+    userConverter
+  );
+  // generate document field for updating nested object
+  const scheduleKey = `shcedules.${termAndYear}`;
+
+  // check if the timetable includes saturday or eigth period courses
+  let sat = false;
+  let eigth = false;
+  const includedCourses = courseDocShorts.map((courseDocShort) => {
+    if (!sat || !eigth) {
+      const scheduleString = courseDocShort.schedule.join();
+      if (scheduleString.includes('SA')) sat = true;
+      if (scheduleString.includes('8')) eigth = true;
+    }
+    return courseDocShort.courseDocId;
+  });
+  const timeTable: TimeTable = {
+    courses: courseDocShorts,
+    sat: sat,
+    eigth: eigth,
+  };
+  await updateDoc(userDocRef, {
+    [scheduleKey]: timeTable,
+    courses: arrayUnion(...includedCourses),
+  });
+};
+
+export const userService: UserService = {
+  setUser: setUser,
+  getUserById: getUserById,
+  getUserByFields: getUserByFields,
+  updateUser: updateUser,
+  updateUserTimetable: updateUserTimetable,
+};
+export type { QueryParams, UpdatableUserFields };
