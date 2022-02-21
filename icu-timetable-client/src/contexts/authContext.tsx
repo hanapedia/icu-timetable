@@ -1,11 +1,12 @@
 import React, { createContext, FC, useEffect, useState } from 'react';
 import { authService } from 'services/firebase/auth/authService';
-import { UserDocument } from 'services/firebase/firestore/users/usersService';
+import { UserDoc } from 'services/firebase/firestore';
+import { userService } from 'services/firebase/firestore/users/userService';
 import { localStorageService } from 'services/local/storage/asyncStorage';
 import { LOCAL_STORAGE_USER } from 'services/local/storage/storageKeys';
 
 type AuthContextData = {
-  authData: UserDocument | null;
+  authData: UserDoc | null;
   register: (authFormData: AuthFormData) => Promise<void>;
   unregister: () => Promise<void>;
   isLoading: boolean;
@@ -24,13 +25,14 @@ type AuthFormData = {
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: FC = ({ children }) => {
-  const [authData, setAuthData] = useState<UserDocument | null>(null);
+  const [authData, setAuthData] = useState<UserDoc | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const register = async (authFormData: AuthFormData) => {
     try {
       const uid = await authService.register();
-      const _authData = await { uid: uid, ...authFormData };
+      const _authData: UserDoc = await { uid: uid, ...authFormData };
+      await userService.setUser(_authData);
       await setAuthData(_authData);
       await localStorageService.set(LOCAL_STORAGE_USER, _authData);
     } catch (error) {
@@ -69,7 +71,7 @@ const AuthProvider: FC = ({ children }) => {
     try {
       const _authData = (await localStorageService.get(
         LOCAL_STORAGE_USER
-      )) as UserDocument;
+      )) as UserDoc;
       await setAuthData(_authData);
       await setIsLoading(false);
     } catch (error) {

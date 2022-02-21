@@ -40,7 +40,7 @@ Use Local Firebase Emulator
 ```
 cd utils
 firebase login
-firebase emulators:start --import=./emulator --export-on-exit
+firebase emulators:start --import=./emulator/data --export-on-exit
 ```
 
 This persists local dvelopment changes /utils/emulator

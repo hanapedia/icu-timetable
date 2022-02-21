@@ -15,7 +15,7 @@ RelationShips
         Users : Courses 
             pivot: Schedules
         Schedules : Courses
-            pivot: courses array in Schedule
+            pivot: courses array in TimeTable
     One-to-Many:
         Users : Schedules
             f-key: userId
@@ -38,24 +38,10 @@ All queries for retrieving documents
 
 */
 
-type Database = {
-  courses: {
-    // has subcollections based on year and term
-    '2019A': CourseDoc[];
-    '2019S': CourseDoc[];
-    '2019W': CourseDoc[];
-    '2020A': CourseDoc[];
-    '2020S': CourseDoc[];
-    '2020W': CourseDoc[];
-    '2021A': CourseDoc[];
-    '2021S': CourseDoc[];
-    '2021W': CourseDoc[];
-    '2022A': CourseDoc[];
-    '2022S': CourseDoc[];
-    '2022W': CourseDoc[];
-  };
-  users: UserDoc[]; // each docs uses uid provided by auth service as id
-  reviews: Review[]; // subcollection of Courses
+const RootTables = {
+  courses: 'allCourses',
+  users: 'users', // each docs uses uid provided by auth service as id
+  reviews: 'reviews', // subcollection of Courses
 };
 
 type CourseDoc = {
@@ -78,15 +64,6 @@ type CourseDoc = {
   nRviews: number;
 };
 
-// for displaying relevent data to the timetable
-// without making query for each courses in a schedule
-type CourseDocShort = {
-  eName: string;
-  jName: string;
-  courseID: number;
-  schedule: string[];
-};
-
 type UserDoc = {
   uid: string;
   gradYear: number;
@@ -94,31 +71,42 @@ type UserDoc = {
   majorType: 'double' | 'single' | 'minor' | 'undecided';
   major: string[];
   studyAbroad: boolean;
-  schedules?: {
-    // considering the potential scaling needs, nested object works fine
-    '2019A'?: Schedule[];
-    '2019S'?: Schedule[];
-    '2019W'?: Schedule[];
-    '2020A'?: Schedule[];
-    '2020S'?: Schedule[];
-    '2020W'?: Schedule[];
-    '2021A'?: Schedule[];
-    '2021S'?: Schedule[];
-    '2021W'?: Schedule[];
-    '2022A'?: Schedule[];
-    '2022S'?: Schedule[];
-    '2022W'?: Schedule[]; // holds all the schedules of the user
-  };
+  timeTables?: TimeTables;
   // list of courseIds of all the courses that user has taken.
   // update based on the schedules
-  courses: string[];
+  courses?: string[];
+};
+
+type TimeTables = {
+  // considering the potential scaling needs, nested object works fine
+  '2019A'?: TimeTable;
+  '2019S'?: TimeTable;
+  '2019W'?: TimeTable;
+  '2020A'?: TimeTable;
+  '2020S'?: TimeTable;
+  '2020W'?: TimeTable;
+  '2021A'?: TimeTable;
+  '2021S'?: TimeTable;
+  '2021W'?: TimeTable;
+  '2022A'?: TimeTable;
+  '2022S'?: TimeTable;
+  '2022W'?: TimeTable; // holds all the schedules of the user
 };
 
 // used in user document
-type Schedule = {
+type TimeTable = {
   courses: CourseDocShort[]; // holds shortened course docs for all the courses in schedule
   sat: boolean;
   eigth: boolean;
+};
+
+// for displaying relevent data to the timetable
+// without making query for each courses in a schedule
+type CourseDocShort = {
+  eName: string;
+  jName: string;
+  courseDocId: string;
+  schedule: string[];
 };
 
 // use in the subcollection of courses document
@@ -128,4 +116,14 @@ type Review = {
   difficulty: number;
   excitement: number;
   comment?: string;
+};
+
+export { RootTables };
+export type {
+  UserDoc,
+  CourseDoc,
+  TimeTable,
+  TimeTables,
+  CourseDocShort,
+  Review,
 };

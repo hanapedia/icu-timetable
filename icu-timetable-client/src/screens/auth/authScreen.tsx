@@ -37,7 +37,6 @@ const AuthScreen = () => {
       <Button onPress={registerHandler} title='register'>
         Register
       </Button>
-      <Text>{authData?.uid}</Text>
       <StatusBar style='auto' />
     </View>
   );
