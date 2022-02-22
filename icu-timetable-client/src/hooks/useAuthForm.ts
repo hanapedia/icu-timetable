@@ -1,7 +1,7 @@
 import { AuthFormContext } from 'contexts/authFormContext';
 import { useContext } from 'react';
 
-export const useAuth = () => {
+export const useAuthForm = () => {
   const context = useContext(AuthFormContext);
 
   if (!context) {

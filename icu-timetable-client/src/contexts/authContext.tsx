@@ -4,6 +4,7 @@ import { UserDoc } from 'services/firebase/firestore';
 import { userService } from 'services/firebase/firestore/users/userService';
 import { localStorageService } from 'services/local/storage/asyncStorage';
 import { LOCAL_STORAGE_USER } from 'services/local/storage/storageKeys';
+import { AuthFormData } from './authFormContext';
 
 type AuthContextData = {
   authData: UserDoc | null;
@@ -12,14 +13,6 @@ type AuthContextData = {
   isLoading: boolean;
   registerLocal: (authFormData: AuthFormData) => Promise<void>;
   unregisterLocal: () => Promise<void>;
-};
-
-type AuthFormData = {
-  gradYear: number;
-  matriMonth: 'april' | 'sept';
-  majorType: 'double' | 'single' | 'minor' | 'undecided';
-  major: string[];
-  studyAbroad: boolean;
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -105,4 +98,4 @@ const AuthProvider: FC = ({ children }) => {
 };
 
 export { AuthProvider, AuthContext };
-export type { AuthContextData, AuthFormData };
+export type { AuthContextData };
