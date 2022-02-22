@@ -4,13 +4,13 @@ import HomeStack from 'navigation/main/home/homeStack';
 import { Button } from 'react-native';
 import { useAuth } from 'hooks/useAuth';
 
-const Stack = createNativeStackNavigator();
+const MainStack = createNativeStackNavigator();
 
-const MainStack = () => {
+const MainStackNavigator = () => {
   const { unregister, authData } = useAuth();
   return (
-    <Stack.Navigator>
-      <Stack.Screen
+    <MainStack.Navigator>
+      <MainStack.Screen
         name='Main'
         component={HomeStack}
         options={{
@@ -20,8 +20,8 @@ const MainStack = () => {
           ),
         }}
       />
-    </Stack.Navigator>
+    </MainStack.Navigator>
   );
 };
 
-export default MainStack;
+export default MainStackNavigator;

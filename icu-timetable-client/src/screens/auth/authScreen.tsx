@@ -1,54 +1,39 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AuthFormData } from 'contexts/authContext';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from 'hooks/useAuth';
+import { AuthStackParamList } from 'navigation/auth/authStackNavigator';
 import React from 'react';
-import {
-  Button,
-  NativeSyntheticEvent,
-  NativeTouchEvent,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { NativeSyntheticEvent, NativeTouchEvent, View } from 'react-native';
+import { Button, Text } from 'react-native-elements';
+import { authStyle } from 'styles/authStack/formStyles';
 
-const AuthScreen = () => {
-  const { register, authData } = useAuth();
+type AuthScreenProps = NativeStackScreenProps<AuthStackParamList, 'Welcome'>;
 
-  // #NO_FIREBASE_TEST use this tag to locate test code
-  const formTestData: AuthFormData = {
-    gradYear: 23,
-    matriMonth: 'april',
-    majorType: 'minor',
-    major: ['ISC', 'BUS'],
-    studyAbroad: false,
-  };
-
-  const registerHandler = async (e: NativeSyntheticEvent<NativeTouchEvent>) => {
-    try {
-      await register(formTestData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
+const AuthScreen = ({ navigation }: AuthScreenProps) => {
   return (
-    <View style={styles.container}>
-      <Text>Sign up</Text>
-      <Button onPress={registerHandler} title='register'>
-        Register
-      </Button>
+    <View style={authStyle.container}>
+      <Text h2 style={authStyle.text}>
+        Start using ICU Timetable App!
+      </Text>
+      <Button
+        onPress={() => navigation.push('ID')}
+        title='Get Started!'
+        buttonStyle={{
+          borderColor: 'rgba(78, 116, 289, 1)',
+        }}
+        type='outline'
+        raised
+        titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
+        containerStyle={{
+          width: 200,
+          marginHorizontal: 50,
+          marginVertical: 10,
+        }}
+      />
       <StatusBar style='auto' />
     </View>
   );
 };
 
-export default AuthScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export { AuthScreen };
