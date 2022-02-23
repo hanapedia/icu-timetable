@@ -15,7 +15,30 @@ const submitGroup: ViewStyle = {
 };
 
 const text: TextStyle = {
-  textAlign: 'center',
+  textAlign: 'left',
+};
+
+const formEntryContainer: ViewStyle = {
+  flexDirection: 'row',
+  justifyContent: 'space-around',
+  alignItems: 'stretch',
+  height: 80,
+};
+
+const formElementContainer: ViewStyle = {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const formEntryTitleContainer: ViewStyle = {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const formEntryTitleText: TextStyle = {
+  textAlign: 'left',
 };
 
 const buttonContainer: ViewStyle = {
@@ -32,32 +55,15 @@ const buttonText: TextStyle = {
   color: 'rgba(78, 116, 289, 1)',
 };
 
-const pickerFormContainer: ViewStyle = {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  height: 80,
-};
-
-const pickerContainer: ViewStyle = {
-  flex: 5,
-  backgroundColor: 'blue',
-};
-
-const pickerTitleContainer: ViewStyle = {
-  flex: 1,
-};
-
-const pickerOptionContainer: ViewStyle = {};
-
 export const authFormStyle = StyleSheet.create({
   formGroup: formGroup,
   submitGroup: submitGroup,
   text: text,
+  formEntryContainer: formEntryContainer,
+  formElementContainer: formElementContainer,
+  formEntryTitleContainer: formEntryTitleContainer,
+  formEntryTitleText: formEntryTitleText,
   buttonContainer: buttonContainer,
   buttonBox: buttonBox,
   buttonText: buttonText,
-  pickerContainer: pickerContainer,
-  pickerFormContainer: pickerFormContainer,
-  pickerTitleContainer: pickerTitleContainer,
-  pickerOptionContainer: pickerOptionContainer,
 });

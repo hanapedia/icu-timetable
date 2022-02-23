@@ -1,4 +1,5 @@
-const MajorAliases = {
+const MajorAliases: AliasObject = {
+  UND: { en: 'Undecided', jp: '未決定' },
   ARC: { en: 'Art and Cultural Heritage', jp: '美術・文化財研究' },
   MUS: { en: 'Music', jp: '音楽' },
   LIT: { en: 'Literature', jp: '文学' },
@@ -38,25 +39,31 @@ const MajorAliases = {
   PCS: { en: 'Peace Studies', jp: '平和研究' },
 };
 
-const IdAliases = {
-  '21': 21,
-  '22': 22,
-  '23': 23,
-  '24': 24,
-  '25': 25,
-  '26': 26,
+const GradYearAliases: AliasObject = {
+  '20': { en: '2020', jp: '2020' },
+  '21': { en: '2021', jp: '2021' },
+  '22': { en: '2022', jp: '2022' },
+  '23': { en: '2023', jp: '2023' },
+  '24': { en: '2024', jp: '2024' },
+  '25': { en: '2025', jp: '2025' },
+  '26': { en: '2026', jp: '2026' },
 };
 
-const MatriMonthAliases = {
+const MatriMonthAliases: AliasObject = {
   sept: { en: 'September', jp: '9月' },
   april: { en: 'April', jp: '4月' },
 };
 
-const MajorTypeAliases = {
+const MajorTypeAliases: AliasObject = {
   single: { en: 'Single', jp: 'シングル' },
   double: { en: 'Double', jp: 'ダブル' },
   minor: { en: 'Major/Minor', jp: 'メジャー・マイナー' },
   undecided: { en: 'Undecided', jp: '未決定' },
 };
 
-export { MajorAliases, IdAliases, MatriMonthAliases, MajorTypeAliases };
+type AliasObject = {
+  [key: string]: { en: string; jp: string };
+};
+
+export { MajorAliases, GradYearAliases, MatriMonthAliases, MajorTypeAliases };
+export type { AliasObject };

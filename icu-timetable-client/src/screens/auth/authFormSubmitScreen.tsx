@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { AuthStackParamList } from 'navigation/auth/authStackNavigator';
-import React from 'react';
-import { View } from 'react-native';
-import { Button, Text } from 'react-native-elements';
+import React, { useState } from 'react';
+import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { Button, ButtonGroup, Text } from 'react-native-elements';
 import { authFormStyle } from 'styles/authStack/formStyles';
 import { globalStyle } from 'styles/globalStyle';
 
@@ -13,16 +13,28 @@ type AuthFormSubmitScreenProps = NativeStackScreenProps<
 >;
 
 const AuthFormSubmitScreen = ({ navigation }: AuthFormSubmitScreenProps) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   return (
     <View style={globalStyle.container}>
       <View style={authFormStyle.formGroup}>
-        <Text h2 style={globalStyle.text}>
-          Start using ICU Timetable App!
-        </Text>
+        <View style={authFormStyle.formEntryContainer}>
+          <View style={authFormStyle.formEntryTitleContainer}>
+            <Text h4 style={authFormStyle.formEntryTitleText}>
+              {'Are you considering to study abroad'}
+            </Text>
+          </View>
+          <View style={authFormStyle.formElementContainer}>
+            <ButtonGroup
+              buttons={['Yes', 'No']}
+              selectedIndex={selectedIndex}
+              onPress={(value) => setSelectedIndex(value)}
+            />
+          </View>
+        </View>
       </View>
       <View style={authFormStyle.submitGroup}>
         <Button
-          onPress={() => navigation.push('ID')}
+          onPress={() => {}}
           title='Get Started!'
           buttonStyle={authFormStyle.buttonBox}
           type='outline'

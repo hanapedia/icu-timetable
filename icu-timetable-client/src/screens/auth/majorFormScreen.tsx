@@ -1,26 +1,57 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SelectForm } from 'components/form/selectForm';
 import { StatusBar } from 'expo-status-bar';
+import { useAuthForm } from 'hooks/useAuthForm';
 import { AuthStackParamList } from 'navigation/auth/authStackNavigator';
 import React from 'react';
 import { View } from 'react-native';
-import { Button, Text } from 'react-native-elements';
+import { Button } from 'react-native-elements';
+import { MajorAliases, MajorTypeAliases } from 'res/alias';
+import { Major } from 'services/firebase/firestore';
 import { authFormStyle } from 'styles/authStack/formStyles';
 import { globalStyle } from 'styles/globalStyle';
 
 type MajorFormScreenProps = NativeStackScreenProps<AuthStackParamList, 'Major'>;
 
 const MajorFormScreen = ({ navigation }: MajorFormScreenProps) => {
+  const { data, getSelectFormProps } = useAuthForm();
+
+  const { items: majorTypeSelectItems, selectHandler: majorTypeSelectHandler } =
+    getSelectFormProps('majorType', MajorTypeAliases);
+  const { items: majorSelectItems, selectHandler: majorSelectHandler } =
+    getSelectFormProps('major', MajorAliases);
+  const { selectHandler: minorSelectHandler } = getSelectFormProps(
+    'minor',
+    MajorAliases
+  );
+
   return (
     <View style={globalStyle.container}>
       <View style={authFormStyle.formGroup}>
-        <Text h2 style={globalStyle.text}>
-          Start using ICU Timetable App!
-        </Text>
+        <SelectForm
+          title='Major Type'
+          onSelectedChange={majorTypeSelectHandler}
+          items={majorTypeSelectItems}
+        />
+        <SelectForm
+          title='Major 1'
+          onSelectedChange={majorSelectHandler}
+          items={majorSelectItems}
+        />
+        {data.majorType === 'double' || data.majorType === 'minor' ? (
+          <SelectForm
+            title='Major 2'
+            onSelectedChange={minorSelectHandler}
+            items={majorSelectItems}
+          />
+        ) : (
+          <></>
+        )}
       </View>
       <View style={authFormStyle.submitGroup}>
         <Button
-          onPress={() => navigation.push('ID')}
-          title='Get Started!'
+          onPress={() => navigation.push('Other')}
+          title='Next'
           buttonStyle={authFormStyle.buttonBox}
           type='outline'
           raised
