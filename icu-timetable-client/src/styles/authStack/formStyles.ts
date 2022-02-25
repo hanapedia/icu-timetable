@@ -19,14 +19,15 @@ const text: TextStyle = {
 };
 
 const formEntryContainer: ViewStyle = {
+  flex: 1,
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   alignItems: 'center',
-  height: 160,
 };
 
 const formElementContainer: ViewStyle = {
   flex: 1,
+  flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
 };

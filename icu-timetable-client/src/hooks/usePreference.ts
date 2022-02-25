@@ -1,7 +1,7 @@
 import { PreferenceContext } from 'contexts/preferenceContext';
 import { useContext } from 'react';
 
-export const useAuthForm = () => {
+export const usePreference = () => {
   const context = useContext(PreferenceContext);
 
   if (!context) {
