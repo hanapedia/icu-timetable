@@ -19,10 +19,10 @@ const text: TextStyle = {
 };
 
 const formEntryContainer: ViewStyle = {
-  flexDirection: 'row',
-  justifyContent: 'space-around',
-  alignItems: 'stretch',
-  height: 80,
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 160,
 };
 
 const formElementContainer: ViewStyle = {
@@ -35,16 +35,17 @@ const formEntryTitleContainer: ViewStyle = {
   flex: 1,
   alignItems: 'center',
   justifyContent: 'center',
+  width: '60%',
 };
 
 const formEntryTitleText: TextStyle = {
-  textAlign: 'left',
+  textAlign: 'center',
 };
 
 const buttonContainer: ViewStyle = {
-  width: 250,
-  marginHorizontal: 40,
-  marginVertical: 10,
+  width: '40%',
+  // marginHorizontal: 40,
+  // marginVertical: 10,
 };
 
 const buttonBox: ViewStyle = {
@@ -53,6 +54,19 @@ const buttonBox: ViewStyle = {
 
 const buttonText: TextStyle = {
   color: 'rgba(78, 116, 289, 1)',
+};
+
+const selectedButtonContainer: ViewStyle = {
+  width: '50%',
+  justifyContent: 'space-between',
+};
+
+const selectedButtonBox: ViewStyle = {
+  backgroundColor: 'rgba(78, 116, 289, 1)',
+};
+
+const selectedButtonText: TextStyle = {
+  color: 'white',
 };
 
 export const authFormStyle = StyleSheet.create({
@@ -66,4 +80,7 @@ export const authFormStyle = StyleSheet.create({
   buttonContainer: buttonContainer,
   buttonBox: buttonBox,
   buttonText: buttonText,
+  selectedButtonContainer: selectedButtonContainer,
+  selectedButtonBox: selectedButtonBox,
+  selectedButtonText: selectedButtonText,
 });
