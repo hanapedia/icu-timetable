@@ -19,10 +19,11 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: FC = ({ children }) => {
   const [authData, setAuthData] = useState<UserDoc | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const register = async (authFormData: AuthFormData) => {
     try {
+      setIsLoading(true);
       const uid = await authService.register();
       const _authData: UserDoc = await { uid: uid, ...authFormData };
       await userService.setUser(_authData);
@@ -66,7 +67,6 @@ const AuthProvider: FC = ({ children }) => {
         LOCAL_STORAGE_USER
       )) as UserDoc;
       await setAuthData(_authData);
-      await setIsLoading(false);
     } catch (error) {
       if (error instanceof Error) throw new Error(error.message);
     }
