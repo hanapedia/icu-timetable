@@ -4,6 +4,7 @@ import { UserDoc } from 'services/firebase/firestore';
 import { userService } from 'services/firebase/firestore/users/userService';
 import { localStorageService } from 'services/local/storage/asyncStorage';
 import { LOCAL_STORAGE_USER } from 'services/local/storage/storageKeys';
+import { AuthFormData } from './authFormContext';
 
 type AuthContextData = {
   authData: UserDoc | null;
@@ -14,22 +15,15 @@ type AuthContextData = {
   unregisterLocal: () => Promise<void>;
 };
 
-type AuthFormData = {
-  gradYear: number;
-  matriMonth: 'april' | 'sept';
-  majorType: 'double' | 'single' | 'minor' | 'undecided';
-  major: string[];
-  studyAbroad: boolean;
-};
-
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: FC = ({ children }) => {
   const [authData, setAuthData] = useState<UserDoc | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const register = async (authFormData: AuthFormData) => {
     try {
+      setIsLoading(true);
       const uid = await authService.register();
       const _authData: UserDoc = await { uid: uid, ...authFormData };
       await userService.setUser(_authData);
@@ -73,7 +67,6 @@ const AuthProvider: FC = ({ children }) => {
         LOCAL_STORAGE_USER
       )) as UserDoc;
       await setAuthData(_authData);
-      await setIsLoading(false);
     } catch (error) {
       if (error instanceof Error) throw new Error(error.message);
     }
@@ -105,4 +98,4 @@ const AuthProvider: FC = ({ children }) => {
 };
 
 export { AuthProvider, AuthContext };
-export type { AuthContextData, AuthFormData };
+export type { AuthContextData };

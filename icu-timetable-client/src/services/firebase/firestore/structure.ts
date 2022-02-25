@@ -66,10 +66,10 @@ type CourseDoc = {
 
 type UserDoc = {
   uid: string;
-  gradYear: number;
-  matriMonth: 'april' | 'sept';
-  majorType: 'double' | 'single' | 'minor' | 'undecided';
-  major: string[];
+  gradYear: GradYear;
+  matriMonth: MatriMonth;
+  majorType: MajorType;
+  major: Major[];
   studyAbroad: boolean;
   timeTables?: TimeTables;
   // list of courseIds of all the courses that user has taken.
@@ -118,6 +118,46 @@ type Review = {
   comment?: string;
 };
 
+type Major =
+  | 'UND'
+  | 'ARC'
+  | 'MUS'
+  | 'LIT'
+  | 'PHR'
+  | 'ECO'
+  | 'BUS'
+  | 'EDU'
+  | 'LED'
+  | 'HST'
+  | 'BIO'
+  | 'CHM'
+  | 'PHY'
+  | 'MTH'
+  | 'ISC'
+  | 'LAW'
+  | 'PPL'
+  | 'POL'
+  | 'IRL'
+  | 'LNG'
+  | 'PSY'
+  | 'MCC'
+  | 'ANT'
+  | 'SOC'
+  | 'AMS'
+  | 'AST'
+  | 'DPS'
+  | 'ENV'
+  | 'GSS'
+  | 'GLS'
+  | 'JPS'
+  | 'PCS';
+
+type MatriMonth = 'april' | 'sept';
+
+type MajorType = 'double' | 'single' | 'minor' | 'undecided';
+
+type GradYear = '20' | '21' | '22' | '23' | '24' | '25' | '26';
+
 export { RootTables };
 export type {
   UserDoc,
@@ -126,4 +166,8 @@ export type {
   TimeTables,
   CourseDocShort,
   Review,
+  Major,
+  MatriMonth,
+  MajorType,
+  GradYear,
 };

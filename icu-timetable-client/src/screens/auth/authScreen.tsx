@@ -1,54 +1,61 @@
-import { AuthFormData } from 'contexts/authContext';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { useAuth } from 'hooks/useAuth';
-import React from 'react';
-import {
-  Button,
-  NativeSyntheticEvent,
-  NativeTouchEvent,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { usePreference } from 'hooks/usePreference';
+import { AuthStackParamList } from 'navigation/auth/authStackNavigator';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { Button, Switch, Text } from 'react-native-elements';
+import { authFormStyle } from 'styles/authStack/formStyles';
+import { globalStyle } from 'styles/globalStyle';
 
-const AuthScreen = () => {
-  const { register, authData } = useAuth();
+type AuthScreenProps = NativeStackScreenProps<AuthStackParamList, 'Welcome'>;
 
-  // #NO_FIREBASE_TEST use this tag to locate test code
-  const formTestData: AuthFormData = {
-    gradYear: 23,
-    matriMonth: 'april',
-    majorType: 'minor',
-    major: ['ISC', 'BUS'],
-    studyAbroad: false,
-  };
+const AuthScreen = ({ navigation }: AuthScreenProps) => {
+  const { preference, setPreference } = usePreference();
+  const [checked, setChecked] = useState(true);
 
-  const registerHandler = async (e: NativeSyntheticEvent<NativeTouchEvent>) => {
-    try {
-      await register(formTestData);
-    } catch (error) {
-      console.error(error);
-    }
+  const languageSwitchHandler = (value: boolean) => {
+    setPreference({ ...preference, language: value ? 'en' : 'jp' });
+    setChecked(value);
   };
 
   return (
-    <View style={styles.container}>
-      <Text>Sign up</Text>
-      <Button onPress={registerHandler} title='register'>
-        Register
-      </Button>
+    <View style={globalStyle.container}>
+      <View style={authFormStyle.formGroup}>
+        <View style={authFormStyle.formEntryContainer}>
+          <View style={authFormStyle.formEntryTitleContainer}>
+            <Text h2 style={authFormStyle.formEntryTitleText}>
+              {checked
+                ? 'Start using ICU Timetable App!'
+                : 'ICU Timetableを始めよう！'}
+            </Text>
+          </View>
+          <View style={authFormStyle.formElementContainer}>
+            <Text h4>{'日本語'}</Text>
+            <Switch
+              value={checked}
+              onValueChange={languageSwitchHandler}
+              style={{ marginHorizontal: 15 }}
+              color={'rgba(78, 116, 289, 1)'}
+            />
+            <Text h4>{'English'}</Text>
+          </View>
+        </View>
+      </View>
+      <View style={authFormStyle.submitGroup}>
+        <Button
+          onPress={() => navigation.push('ID')}
+          title='Get Started!'
+          buttonStyle={authFormStyle.buttonBox}
+          type='outline'
+          raised
+          titleStyle={authFormStyle.buttonText}
+          containerStyle={authFormStyle.buttonContainer}
+        />
+      </View>
       <StatusBar style='auto' />
     </View>
   );
 };
 
-export default AuthScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export { AuthScreen };

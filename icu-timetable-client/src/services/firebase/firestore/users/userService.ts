@@ -19,7 +19,7 @@ import {
   RootTables,
   TimeTable,
 } from 'services/firebase/firestore';
-import { CourseDocShort } from '../structure';
+import { CourseDocShort, Major } from '../structure';
 
 type UserService = {
   setUser: (userDoc: UserDoc) => Promise<void>;
@@ -43,7 +43,7 @@ type QueryParams = {
 
 type UpdatableUserFields = {
   majorType?: 'double' | 'single' | 'minor' | 'undecided';
-  major?: string[];
+  major?: Major[];
   studyAbroad?: boolean;
 };
 
