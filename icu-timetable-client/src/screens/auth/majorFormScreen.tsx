@@ -7,7 +7,6 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { MajorAliases, MajorTypeAliases } from 'res/alias';
-import { Major } from 'services/firebase/firestore';
 import { authFormStyle } from 'styles/authStack/formStyles';
 import { globalStyle } from 'styles/globalStyle';
 
