@@ -2,9 +2,9 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TimetableStackParamList } from 'navigation/main/home/timetable/timetableStack';
 import React, { FC, useLayoutEffect } from 'react';
 import { View } from 'react-native';
-import { Text } from 'react-native-elements';
 import { destructureYearTermString } from 'res/helper';
 import { globalStyle } from 'styles/globalStyle';
+import { TimetableUi } from 'components/timetable/gridUi';
 
 type TimetableScreenProps = NativeStackScreenProps<
   TimetableStackParamList,
@@ -18,9 +18,7 @@ const TimetableScreen: FC<TimetableScreenProps> = ({ navigation, route }) => {
   });
   return (
     <View style={globalStyle.container}>
-      <Text h2 style={globalStyle.text}>
-        TimetableScreen
-      </Text>
+      <TimetableUi yearTerm={route.params.yearTerm} />
     </View>
   );
 };

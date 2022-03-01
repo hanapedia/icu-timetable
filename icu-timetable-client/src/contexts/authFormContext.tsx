@@ -14,13 +14,9 @@ import {
   MajorTypeAliases,
   MatriMonthAliases,
 } from 'res/alias';
-import {
-  GradYear,
-  Major,
-  MajorType,
-  MatriMonth,
-  UserDoc,
-} from 'services/firebase/firestore';
+import { UserDoc } from 'services/firebase/firestore';
+import { GradYear, Major, MajorType, MatriMonth } from 'types/icuSpecificTypes';
+
 import {
   localStorageService,
   LOCAL_STORAGE_USER,

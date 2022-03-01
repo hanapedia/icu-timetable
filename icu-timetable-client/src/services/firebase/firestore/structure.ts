@@ -38,6 +38,14 @@ All queries for retrieving documents
 
 */
 
+import {
+  Cells,
+  GradYear,
+  Major,
+  MajorType,
+  MatriMonth,
+} from 'types/icuSpecificTypes';
+
 const RootTables = {
   courses: 'allCourses',
   users: 'users', // each docs uses uid provided by auth service as id
@@ -53,7 +61,7 @@ type CourseDoc = {
   subId?: string;
   eName: string;
   jName: string;
-  schedule: string[];
+  schedule?: string[];
   room?: string;
   mode?: string;
   capacity?: number;
@@ -106,7 +114,7 @@ type CourseDocShort = {
   eName: string;
   jName: string;
   courseDocId: string;
-  schedule: string[];
+  schedule: Cells[];
 };
 
 // use in the subcollection of courses document
@@ -118,46 +126,6 @@ type Review = {
   comment?: string;
 };
 
-type Major =
-  | 'UND'
-  | 'ARC'
-  | 'MUS'
-  | 'LIT'
-  | 'PHR'
-  | 'ECO'
-  | 'BUS'
-  | 'EDU'
-  | 'LED'
-  | 'HST'
-  | 'BIO'
-  | 'CHM'
-  | 'PHY'
-  | 'MTH'
-  | 'ISC'
-  | 'LAW'
-  | 'PPL'
-  | 'POL'
-  | 'IRL'
-  | 'LNG'
-  | 'PSY'
-  | 'MCC'
-  | 'ANT'
-  | 'SOC'
-  | 'AMS'
-  | 'AST'
-  | 'DPS'
-  | 'ENV'
-  | 'GSS'
-  | 'GLS'
-  | 'JPS'
-  | 'PCS';
-
-type MatriMonth = 'april' | 'sept';
-
-type MajorType = 'double' | 'single' | 'minor' | 'undecided';
-
-type GradYear = '20' | '21' | '22' | '23' | '24' | '25' | '26';
-
 export { RootTables };
 export type {
   UserDoc,
@@ -166,8 +134,4 @@ export type {
   TimeTables,
   CourseDocShort,
   Review,
-  Major,
-  MatriMonth,
-  MajorType,
-  GradYear,
 };

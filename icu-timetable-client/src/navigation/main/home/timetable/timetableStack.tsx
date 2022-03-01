@@ -6,7 +6,6 @@ import {
 } from 'screens/home/timetable';
 import React from 'react';
 import { YearTerm } from 'types/icuSpecificTypes';
-import { destructureYearTermString } from 'res/helper';
 
 type TimetableStackParamList = {
   Timetable: {

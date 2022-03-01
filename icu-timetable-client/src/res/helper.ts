@@ -1,6 +1,8 @@
-import { YearTerm } from 'types/icuSpecificTypes';
+import { Cells, YearTerm } from 'types/icuSpecificTypes';
 
-export const destructureYearTermString = (yearTerm: YearTerm) => {
+// take YYYYT and convert to YYYY and Term
+// egs. 2022S to 2022 and Spring
+const destructureYearTermString = (yearTerm: YearTerm) => {
   const termAlias = yearTerm.slice(4);
   return {
     year: +yearTerm.slice(0, 4),
@@ -8,3 +10,8 @@ export const destructureYearTermString = (yearTerm: YearTerm) => {
       termAlias === 'S' ? 'Spring' : termAlias === 'A' ? 'Autumn' : 'Winter',
   };
 };
+
+// take Schedule array and returns array cotaining coordinates for absolute positioning
+const convertScheduleToCoord = (Schedule: Cells[]) => {};
+
+export { destructureYearTermString };

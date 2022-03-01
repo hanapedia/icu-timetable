@@ -19,7 +19,8 @@ import {
   RootTables,
   TimeTable,
 } from 'services/firebase/firestore';
-import { CourseDocShort, Major } from '../structure';
+import { CourseDocShort } from 'services/firebase/firestore/structure';
+import { Major } from 'types/icuSpecificTypes';
 
 type UserService = {
   setUser: (userDoc: UserDoc) => Promise<void>;
