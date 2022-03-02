@@ -1,31 +1,32 @@
 import React, { FC } from 'react';
 import { Pressable } from 'react-native';
-import { Period, WeekDay } from 'types/icuSpecificTypes';
+import { RowLabel, ColLabel } from 'types/icuSpecificTypes';
 
 type CellProps = {
-  weekDay: WeekDay;
-  period: Period;
+  colLabel: ColLabel;
+  rowLabel: RowLabel;
 };
 
-const TimetableCell: FC<CellProps> = ({ weekDay, period }) => {
-  return period === 'label' || period === 'lunch' ? (
+const TimetableCell: FC<CellProps> = ({ colLabel, rowLabel }) => {
+  return rowLabel === 'label' || rowLabel === 'lunch' ? (
     <Pressable
       style={{
         borderWidth: 0.5,
         borderColor: 'black',
-        height: period === 'lunch' ? '5%' : '4%',
+        height: '17.5%',
         backgroundColor: 'grey',
+        flex: 1,
       }}
-      onPress={() => console.log(`${weekDay}/${period}`)}
+      onPress={() => console.log(`${colLabel}/${rowLabel}`)}
     />
   ) : (
     <Pressable
       style={{
         borderWidth: 0.5,
         borderColor: 'black',
-        height: '13%',
+        flex: 2,
       }}
-      onPress={() => console.log(`${weekDay}/${period}`)}
+      onPress={() => console.log(`${colLabel}/${rowLabel}`)}
     />
   );
 };

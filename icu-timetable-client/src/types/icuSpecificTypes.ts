@@ -12,9 +12,19 @@ type YearTerm =
   | '2022S'
   | '2022W';
 
-type WeekDay = 'label' | 'M' | 'TU' | 'W' | 'TH' | 'F' | 'SA';
+type ColLabel = 'label' | 'M' | 'TU' | 'W' | 'TH' | 'F' | 'SA';
 
-type Period = 'label' | '1' | '2' | '3' | 'lunch' | '4' | '5' | '6' | '7' | '8';
+type RowLabel =
+  | 'label'
+  | '1'
+  | '2'
+  | '3'
+  | 'lunch'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8';
 
 type MatriMonth = 'april' | 'sept';
 
@@ -55,6 +65,14 @@ type Major =
   | 'GLS'
   | 'JPS'
   | 'PCS';
+
+type Schedule = {
+  [key: string]: Period[];
+};
+
+type Period = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | '*4';
+
+type WeekDay = 'M' | 'TU' | 'W' | 'TH' | 'F' | 'SA';
 
 type Cells =
   | '1/SA'
@@ -108,11 +126,13 @@ type Cells =
 
 export type {
   YearTerm,
-  WeekDay,
+  ColLabel,
+  RowLabel,
   Period,
   Major,
   MajorType,
   MatriMonth,
   GradYear,
-  Cells,
+  Schedule,
+  WeekDay,
 };

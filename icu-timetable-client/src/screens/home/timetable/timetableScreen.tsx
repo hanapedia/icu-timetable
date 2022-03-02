@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { TimetableStackParamList } from 'navigation/main/home/timetable/timetableStack';
 import React, { FC, useLayoutEffect } from 'react';
 import { View } from 'react-native';
-import { destructureYearTermString } from 'res/helper';
+import { destructureYearTermString } from 'res';
 import { globalStyle } from 'styles/globalStyle';
 import { TimetableUi } from 'components/timetable/gridUi';
 

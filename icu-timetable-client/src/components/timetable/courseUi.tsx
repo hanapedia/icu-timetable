@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-elements';
+import { convertScheduleToCoord } from 'res';
 
-const CourseUi = () => {
+type CourseUiProps = {
+  top: string;
+  left: string;
+  height: string;
+  width: string;
+};
+
+const CourseUi: FC<CourseUiProps> = ({ top, left, height, width }) => {
   return (
     <View
       style={{
         position: 'absolute',
-        height: '39%',
-        width: '20%',
+        height: height,
+        width: width,
         backgroundColor: 'red',
-        bottom: '13%',
-        left: 0,
+        top: top,
+        left: left,
       }}
     >
       <Text h1>{'Hello'}</Text>

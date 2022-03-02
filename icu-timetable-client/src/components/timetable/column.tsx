@@ -1,15 +1,14 @@
 import React, { FC } from 'react';
 import { View } from 'react-native';
-import { Period, WeekDay } from 'types/icuSpecificTypes';
+import { RowLabel, ColLabel } from 'types/icuSpecificTypes';
 import { TimetableCell } from 'components/timetable/cell';
 
 type DaysColProps = {
-  weekDay: WeekDay;
+  colLabel: ColLabel;
 };
 
-const TimetableCol: FC<DaysColProps> = ({ weekDay }) => {
-  const periods: Period[] = [
-    'label',
+const TimetableCol: FC<DaysColProps> = ({ colLabel }) => {
+  const rowLabels: RowLabel[] = [
     '1',
     '2',
     '3',
@@ -18,36 +17,29 @@ const TimetableCol: FC<DaysColProps> = ({ weekDay }) => {
     '5',
     '6',
     '7',
+    '8',
   ];
-  return weekDay === 'label' ? (
+  return (
     <View
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: 'grey',
-      }}
+      style={
+        colLabel === 'label'
+          ? {
+              flex: 1,
+              flexDirection: 'column',
+              backgroundColor: 'white',
+            }
+          : {
+              flex: 1,
+              flexDirection: 'column',
+              backgroundColor: 'white',
+            }
+      }
     >
-      {periods.map((period) => (
+      {rowLabels.map((rowLabel) => (
         <TimetableCell
-          key={`${period}/lable`}
-          weekDay={'label'}
-          period={period}
-        />
-      ))}
-    </View>
-  ) : (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: 'white',
-      }}
-    >
-      {periods.map((period) => (
-        <TimetableCell
-          key={`${period}/${weekDay}`}
-          weekDay={weekDay}
-          period={period}
+          key={`${rowLabel}/lable`}
+          colLabel={'label'}
+          rowLabel={rowLabel}
         />
       ))}
     </View>

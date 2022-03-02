@@ -39,7 +39,7 @@ All queries for retrieving documents
 */
 
 import {
-  Cells,
+  Schedule,
   GradYear,
   Major,
   MajorType,
@@ -61,7 +61,7 @@ type CourseDoc = {
   subId?: string;
   eName: string;
   jName: string;
-  schedule?: string[];
+  schedule?: Schedule;
   room?: string;
   mode?: string;
   capacity?: number;
@@ -114,7 +114,7 @@ type CourseDocShort = {
   eName: string;
   jName: string;
   courseDocId: string;
-  schedule: Cells[];
+  schedule: Schedule;
 };
 
 // use in the subcollection of courses document
@@ -133,5 +133,6 @@ export type {
   TimeTable,
   TimeTables,
   CourseDocShort,
+  Schedule,
   Review,
 };
