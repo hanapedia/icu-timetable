@@ -2,23 +2,16 @@ import React, { FC } from 'react';
 import { View } from 'react-native';
 import { RowLabel, ColLabel } from 'types/icuSpecificTypes';
 import { TimetableCell } from 'components/timetable/cell';
+import { useTimetable } from 'hooks';
 
 type DaysColProps = {
   colLabel: ColLabel;
 };
 
 const TimetableCol: FC<DaysColProps> = ({ colLabel }) => {
-  const rowLabels: RowLabel[] = [
-    '1',
-    '2',
-    '3',
-    'lunch',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-  ];
+  const rowLabels: RowLabel[] = ['1', '2', '3', 'lunch', '4', '5', '6', '7'];
+  const { timetableData } = useTimetable();
+  if (timetableData.timetable.eigth) rowLabels.push('8');
   return (
     <View
       style={

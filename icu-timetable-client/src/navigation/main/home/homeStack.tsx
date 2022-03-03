@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import ScheduleScreen from 'screens/home/scheduleScreen';
 import SettingsScreen from 'screens/home/settingsSceen';
-import { TimetableStackNavigator } from 'navigation/main/home/timetable/timetableStack';
+import { TimetableStackNavigator } from 'navigation/main/home/timetable/timetableStackNavigator';
 
 type HomeStackParamList = {
   Timetables: undefined;

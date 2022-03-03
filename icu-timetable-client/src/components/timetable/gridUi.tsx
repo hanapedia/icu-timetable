@@ -1,25 +1,20 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { View } from 'react-native';
 import { ColLabel, YearTerm } from 'types/icuSpecificTypes';
 import { TimetableCol } from 'components/timetable/column';
-import { CourseUi } from 'components/timetable/courseUi';
-import { convertScheduleToCoord } from 'res';
+import { CourseUi, CourseUiProps } from 'components/timetable/courseUi';
+import { useTimetable } from 'hooks';
 
 type TimetableUiProps = {
   yearTerm: YearTerm;
 };
 
 const TimetableUi: FC<TimetableUiProps> = ({ yearTerm }) => {
-  const colLabels: ColLabel[] = ['M', 'TU', 'W', 'TH', 'F', 'SA'];
-  const coordinateArray = convertScheduleToCoord(
-    {
-      M: [5, 6, 7],
-      TU: ['*4'],
-      W: [1, 2],
-    },
-    true,
-    true
-  );
+  const colLabels: ColLabel[] = ['M', 'TU', 'W', 'TH', 'F'];
+  const { timetableData, mapCourses } = useTimetable();
+  if (timetableData.timetable.sat) colLabels.push('SA');
+
+  const courseUiProps = mapCourses(timetableData.timetable);
   return (
     <View style={{ flex: 1, flexDirection: 'column' }}>
       <View style={{ height: '5%', flexDirection: 'row' }}></View>
@@ -36,14 +31,8 @@ const TimetableUi: FC<TimetableUiProps> = ({ yearTerm }) => {
           {colLabels.map((colLabel) => (
             <TimetableCol key={colLabel} colLabel={colLabel} />
           ))}
-          {coordinateArray.map((coords) => (
-            <CourseUi
-              key={coords.height + coords.width}
-              top={coords.top}
-              left={coords.left}
-              height={coords.height}
-              width={coords.width}
-            />
+          {courseUiProps.map((props, index) => (
+            <CourseUi key={index} {...props} />
           ))}
         </View>
       </View>

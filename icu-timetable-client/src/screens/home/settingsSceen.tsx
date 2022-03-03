@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks';
 import React from 'react';
 import {
   StyleSheet,
@@ -30,13 +30,13 @@ const SettingsScreen = () => {
       eName: 'Teaching Practicum in IB World School',
       jName: 'IB認定校での教育実習',
       courseDocId: '2020W32106',
-      schedule: ['2/W', '2/M'],
+      schedule: { W: [2], M: [2] },
     },
     {
       eName: 'Global Sociology',
       jName: '国際社会学',
       courseDocId: '2020W31288',
-      schedule: ['1/SA', '2/SA', '3/SA'],
+      schedule: { SA: [1, 2, 3] },
     },
   ];
 

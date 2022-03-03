@@ -1,5 +1,8 @@
 import { Period, Schedule, WeekDay, YearTerm } from 'types/icuSpecificTypes';
 import { cellWidths, cellHeights } from 'res/units';
+import { CourseUiProps } from 'components/timetable/courseUi';
+import { CourseDocShort } from 'services/firebase/firestore';
+import { ColorValue } from 'react-native';
 
 // take YYYYT and convert to YYYY and Term
 // egs. 2022S to 2022 and Spring
@@ -32,16 +35,18 @@ type GroupedSchedule = {
 // take Schedule array and returns array cotaining coordinates for absolute positioning
 // the cells will be in chunks if they are connected vertically
 const convertScheduleToCoord = (
-  schedule: Schedule,
-  eigth: boolean = false,
-  sat: boolean = false
-): CellCoordinates[] => {
+  couseDocShort: CourseDocShort,
+  xUnit: number,
+  yUnit: number,
+  color: ColorValue
+): CourseUiProps[] => {
+  const { schedule, eName, jName, courseDocId } = couseDocShort;
   // group schedule
   const groupedSchedule = groupSchedule(schedule);
 
-  let cellCoordinates: CellCoordinates[] = [];
+  let courseUiProps: CourseUiProps[] = [];
   for (const weekDay in schedule) {
-    let xOffsetAndWidth = getXOffsetAndWidth(weekDay as WeekDay, sat);
+    let xOffsetAndWidth = getXOffsetAndWidth(weekDay as WeekDay, xUnit);
     for (const periodGroupKey in groupedSchedule[weekDay]) {
       let periodGroup =
         groupedSchedule[weekDay][periodGroupKey as keyof AMPMPeriods];
@@ -50,18 +55,24 @@ const convertScheduleToCoord = (
         let yOffsetAndHeight = getYOffsetAndHeight(
           basePeriod,
           periodGroup.length,
-          eigth
+          yUnit
         );
-        cellCoordinates.push({ ...xOffsetAndWidth, ...yOffsetAndHeight });
+        courseUiProps.push({
+          ...xOffsetAndWidth,
+          ...yOffsetAndHeight,
+          eName,
+          jName,
+          courseDocId,
+          color,
+        });
       }
     }
   }
 
-  return cellCoordinates;
+  return courseUiProps;
 };
 
-const getXOffsetAndWidth = (weekDay: WeekDay, sat: boolean) => {
-  const unit = sat ? cellWidths.sat : cellWidths.defualt;
+const getXOffsetAndWidth = (weekDay: WeekDay, unit: number) => {
   const percentage =
     weekDay === 'M'
       ? 0
@@ -80,9 +91,8 @@ const getXOffsetAndWidth = (weekDay: WeekDay, sat: boolean) => {
 const getYOffsetAndHeight = (
   period: Period,
   nPeriods: number,
-  eigth: boolean
+  unit: number
 ) => {
-  const unit = eigth ? cellHeights.baseEigth : cellHeights.base;
   let topPercentage =
     period === '*4'
       ? unit * 6.5

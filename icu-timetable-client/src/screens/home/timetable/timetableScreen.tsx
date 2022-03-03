@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { TimetableStackParamList } from 'navigation/main/home/timetable/timetableStack';
+import { TimetableStackParamList } from 'navigation/main/home/timetable/timetableStackNavigator';
 import React, { FC, useLayoutEffect } from 'react';
 import { View } from 'react-native';
 import { destructureYearTermString } from 'res';

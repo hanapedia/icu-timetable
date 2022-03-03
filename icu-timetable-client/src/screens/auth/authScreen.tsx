@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { usePreference } from 'hooks/usePreference';
+import { usePreference } from 'hooks';
 import { AuthStackParamList } from 'navigation/auth/authStackNavigator';
 import React, { useState } from 'react';
 import { View } from 'react-native';

@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { useAuth } from 'hooks/useAuth';
+import { useAuth } from 'hooks';
 import React from 'react';
 import { AuthStackNavigator } from 'navigation/auth/authStackNavigator';
 import MainStackNavigator from 'navigation/main/mainStackNavigator';

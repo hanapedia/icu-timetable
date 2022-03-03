@@ -1,7 +1,7 @@
 // should be used as percentage value
 const cellHeights = {
-  base: 6.667,
-  baseEigth: 5.882,
+  default: 6.667,
+  eigth: 5.882,
 };
 // should be used as percentage value
 const cellWidths = {
@@ -9,4 +9,11 @@ const cellWidths = {
   sat: 16.67,
 };
 
-export { cellHeights, cellWidths };
+const getUnits = (sat: boolean, eigth: boolean) => {
+  return {
+    xUnit: sat ? cellWidths.sat : cellWidths.defualt,
+    yUnit: eigth ? cellHeights.eigth : cellHeights.default,
+  };
+};
+
+export { cellHeights, cellWidths, getUnits };
