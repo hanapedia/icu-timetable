@@ -7,7 +7,7 @@ module.exports = function (api) {
         'module-resolver',
         {
           root: ['./src'],
-          extensions: ['.js', '.ts', '.tsx'],
+          extensions: ['.ts', '.tsx'],
         },
       ],
       ['inline-dotenv'],

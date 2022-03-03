@@ -1,5 +1,7 @@
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import { HomeStackParamList } from 'navigation/main/home/homeStack';
+import React, { FC, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,7 +18,12 @@ import {
   userService,
 } from 'services/firebase/firestore/users/userService';
 
-const ScheduleScreen = () => {
+type ScheduleScreenProps = BottomTabNavigationProp<
+  HomeStackParamList,
+  'Schedule'
+>;
+
+const ScheduleScreen: FC<ScheduleScreenProps> = (navigation) => {
   const testFormUserId = 'iDWw77nnZ0ZxJSNz1pn3EujaSG2Y';
   const testFormQueryParams: QueryParams = {
     major: ['ISC', 'PSY'],

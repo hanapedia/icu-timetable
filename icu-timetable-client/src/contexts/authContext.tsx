@@ -11,8 +11,6 @@ type AuthContextData = {
   register: (authFormData: AuthFormData) => Promise<void>;
   unregister: () => Promise<void>;
   isLoading: boolean;
-  registerLocal: (authFormData: AuthFormData) => Promise<void>;
-  unregisterLocal: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -48,6 +46,7 @@ const AuthProvider: FC = ({ children }) => {
       const _authData = { uid: uid, ...authFormData };
       setAuthData(_authData);
       await localStorageService.set(LOCAL_STORAGE_USER, _authData);
+      console.log('registered local user');
     } catch (error) {
       if (error instanceof Error) throw new Error(error.message);
     }
@@ -58,6 +57,7 @@ const AuthProvider: FC = ({ children }) => {
   const unregisterLocal = async () => {
     setAuthData(null);
     await localStorageService.remove(LOCAL_STORAGE_USER);
+    console.log('unregistered local user');
   };
 
   // callback passed to authStateChangeHandler
@@ -83,14 +83,16 @@ const AuthProvider: FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{
-        authData,
-        register,
-        unregister,
-        isLoading,
-        registerLocal,
-        unregisterLocal,
-      }}
+      value={
+        process.env.STAGE === 'dev'
+          ? {
+              authData,
+              register: registerLocal,
+              unregister: unregisterLocal,
+              isLoading,
+            }
+          : { authData, register, unregister, isLoading }
+      }
     >
       {children}
     </AuthContext.Provider>

@@ -15,7 +15,7 @@ RelationShips
         Users : Courses 
             pivot: Schedules
         Schedules : Courses
-            pivot: courses array in TimeTable
+            pivot: courses array in Timetable
     One-to-Many:
         Users : Schedules
             f-key: userId
@@ -38,6 +38,14 @@ All queries for retrieving documents
 
 */
 
+import {
+  Schedule,
+  GradYear,
+  Major,
+  MajorType,
+  MatriMonth,
+} from 'types/icuSpecificTypes';
+
 const RootTables = {
   courses: 'allCourses',
   users: 'users', // each docs uses uid provided by auth service as id
@@ -53,7 +61,7 @@ type CourseDoc = {
   subId?: string;
   eName: string;
   jName: string;
-  schedule: string[];
+  schedule?: Schedule;
   room?: string;
   mode?: string;
   capacity?: number;
@@ -71,42 +79,42 @@ type UserDoc = {
   majorType: MajorType;
   major: Major[];
   studyAbroad: boolean;
-  timeTables?: TimeTables;
+  timetables?: Timetables;
   // list of courseIds of all the courses that user has taken.
   // update based on the schedules
   courses?: string[];
 };
 
-type TimeTables = {
+type Timetables = {
   // considering the potential scaling needs, nested object works fine
-  '2019A'?: TimeTable;
-  '2019S'?: TimeTable;
-  '2019W'?: TimeTable;
-  '2020A'?: TimeTable;
-  '2020S'?: TimeTable;
-  '2020W'?: TimeTable;
-  '2021A'?: TimeTable;
-  '2021S'?: TimeTable;
-  '2021W'?: TimeTable;
-  '2022A'?: TimeTable;
-  '2022S'?: TimeTable;
-  '2022W'?: TimeTable; // holds all the schedules of the user
+  '2019A'?: Timetable;
+  '2019S'?: Timetable;
+  '2019W'?: Timetable;
+  '2020A'?: Timetable;
+  '2020S'?: Timetable;
+  '2020W'?: Timetable;
+  '2021A'?: Timetable;
+  '2021S'?: Timetable;
+  '2021W'?: Timetable;
+  '2022A'?: Timetable;
+  '2022S'?: Timetable;
+  '2022W'?: Timetable; // holds all the schedules of the user
 };
 
 // used in user document
-type TimeTable = {
+type Timetable = {
   courses: CourseDocShort[]; // holds shortened course docs for all the courses in schedule
   sat: boolean;
   eigth: boolean;
 };
 
-// for displaying relevent data to the timetable
+// for displaying relevent data to the Timetable
 // without making query for each courses in a schedule
 type CourseDocShort = {
   eName: string;
   jName: string;
   courseDocId: string;
-  schedule: string[];
+  schedule: Schedule;
 };
 
 // use in the subcollection of courses document
@@ -118,56 +126,13 @@ type Review = {
   comment?: string;
 };
 
-type Major =
-  | 'UND'
-  | 'ARC'
-  | 'MUS'
-  | 'LIT'
-  | 'PHR'
-  | 'ECO'
-  | 'BUS'
-  | 'EDU'
-  | 'LED'
-  | 'HST'
-  | 'BIO'
-  | 'CHM'
-  | 'PHY'
-  | 'MTH'
-  | 'ISC'
-  | 'LAW'
-  | 'PPL'
-  | 'POL'
-  | 'IRL'
-  | 'LNG'
-  | 'PSY'
-  | 'MCC'
-  | 'ANT'
-  | 'SOC'
-  | 'AMS'
-  | 'AST'
-  | 'DPS'
-  | 'ENV'
-  | 'GSS'
-  | 'GLS'
-  | 'JPS'
-  | 'PCS';
-
-type MatriMonth = 'april' | 'sept';
-
-type MajorType = 'double' | 'single' | 'minor' | 'undecided';
-
-type GradYear = '20' | '21' | '22' | '23' | '24' | '25' | '26';
-
 export { RootTables };
 export type {
   UserDoc,
   CourseDoc,
-  TimeTable,
-  TimeTables,
+  Timetable,
+  Timetables,
   CourseDocShort,
+  Schedule,
   Review,
-  Major,
-  MatriMonth,
-  MajorType,
-  GradYear,
 };

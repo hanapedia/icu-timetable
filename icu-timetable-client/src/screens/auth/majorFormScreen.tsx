@@ -1,13 +1,12 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SelectForm } from 'components/form/selectForm';
 import { StatusBar } from 'expo-status-bar';
-import { useAuthForm } from 'hooks/useAuthForm';
+import { useAuthForm } from 'hooks';
 import { AuthStackParamList } from 'navigation/auth/authStackNavigator';
 import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { MajorAliases, MajorTypeAliases } from 'res/alias';
-import { Major } from 'services/firebase/firestore';
 import { authFormStyle } from 'styles/authStack/formStyles';
 import { globalStyle } from 'styles/globalStyle';
 

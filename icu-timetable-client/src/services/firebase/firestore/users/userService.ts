@@ -17,9 +17,10 @@ import {
   UserDoc,
   initFirestore,
   RootTables,
-  TimeTable,
+  Timetable,
 } from 'services/firebase/firestore';
-import { CourseDocShort, Major } from '../structure';
+import { CourseDocShort } from 'services/firebase/firestore/structure';
+import { Major } from 'types/icuSpecificTypes';
 
 type UserService = {
   setUser: (userDoc: UserDoc) => Promise<void>;
@@ -56,7 +57,7 @@ const userConverter = {
       majorType: userDoc.majorType,
       major: userDoc.major,
       studyAbroad: userDoc.studyAbroad,
-      schedules: userDoc.timeTables,
+      schedules: userDoc.timetables,
       courses: userDoc.courses,
     };
   },
@@ -73,7 +74,7 @@ const userConverter = {
       majorType: data.majorType,
       major: data.major,
       studyAbroad: data.studyAbroad,
-      timeTables: data.timeTables,
+      timetables: data.timetables,
       courses: data.courses,
     };
   },
@@ -160,26 +161,28 @@ const updateUserTimetable = async (
     userConverter
   );
   // generate document field for updating nested object
-  const scheduleKey = `shcedules.${termAndYear}`;
+  const timetableKey = `timetables.${termAndYear}`;
 
   // check if the timetable includes saturday or eigth period courses
+  // and creates an array with the ids of included courses
   let sat = false;
   let eigth = false;
   const includedCourses = courseDocShorts.map((courseDocShort) => {
     if (!sat || !eigth) {
-      const scheduleString = courseDocShort.schedule.join();
-      if (scheduleString.includes('SA')) sat = true;
-      if (scheduleString.includes('8')) eigth = true;
+      for (const weekDay in courseDocShort.schedule) {
+        if (weekDay === 'SA') sat = true;
+        if (courseDocShort.schedule[weekDay].includes(8)) eigth = true;
+      }
     }
     return courseDocShort.courseDocId;
   });
-  const timeTable: TimeTable = {
+  const timetable: Timetable = {
     courses: courseDocShorts,
     sat: sat,
     eigth: eigth,
   };
   await updateDoc(userDocRef, {
-    [scheduleKey]: timeTable,
+    [timetableKey]: timetable,
     courses: arrayUnion(...includedCourses),
   });
 };
